@@ -15,8 +15,8 @@ const TasksListContextProvider = (props) => {
     localStorage.setItem('Tasks', JSON.stringify(tasks));
   },[tasks]);
 
-  const addTask = (storyId, title, description, points) => {
-    setTasks([...tasks, { id: uuidv4(), storyId, title, description, points }]);
+  const addTask = (storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4) => {
+    setTasks([...tasks, { id: uuidv4(), storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4 }]);
   };
 
   const removeTask = (id) => {
@@ -27,14 +27,14 @@ const TasksListContextProvider = (props) => {
     setTasks([]);
   };
 
-  const findEditStory = (id) => {
+  const findEditTask= (id) => {
     const story = tasks.find((task) => task.id === id);
     setTaskToEdit(story);
   };
 
-  const editStory = (id, title, description, points) => {
+  const editTask = (id, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4) => {
     const newTasks = tasks.map((task) =>
-      task.id === id ? { title, description, points } : task
+      task.id === id ? { title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4 } : task
     );
 
     setTasks(newTasks);
@@ -47,11 +47,10 @@ const TasksListContextProvider = (props) => {
         value={{
           tasks,
           addTask,
-          removeTask,
           clearTasksList,
-          findEditStory,
-          editStory,
           taskToEdit,
+          editTask,
+          removeTask,
         }}
       >
         {props.children}

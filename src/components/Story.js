@@ -7,8 +7,8 @@ const Story = ({story}) => {
     const { removeStory, findEditStory } = useContext(StoriesListContext);
     const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
 
-    const openTasksForm = () => {
-        setIsTaskFormOpen(true);
+    const handleTasksForm = (isOpen) => {
+        setIsTaskFormOpen(isOpen);
     };
 
     return (
@@ -19,8 +19,16 @@ const Story = ({story}) => {
             <div>
                 <button onClick={() => removeStory(story.id)}>Delete</button>
                 <button onClick={() => findEditStory(story.id)}>Edit</button>
-                <button onClick={openTasksForm}>Add Task</button>
-                { isTaskFormOpen && <TasksForm /> }
+                { !isTaskFormOpen && 
+                <button onClick={() => handleTasksForm(true)}> 
+                Show Tasks
+                </button>}
+                { isTaskFormOpen && 
+                <button onClick={() => handleTasksForm(false)}> 
+                Hide Tasks
+                </button>}
+                { isTaskFormOpen && <TasksForm storyId={story.id}/> }
+                
             </div>
         </li>
     )

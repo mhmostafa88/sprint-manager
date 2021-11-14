@@ -3,9 +3,8 @@ import { TasksListContext } from "../context/TasksListContext";
 import TasksList from "./TasksList";
 
 
-export const TasksForm = (props) => {
+export const TasksForm = ({ storyId }) => {
     const { addTask, clearTasksList, taskToEdit, editTask } = useContext(TasksListContext);
-    const storyId = props.storyId;
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -124,7 +123,7 @@ export const TasksForm = (props) => {
         <button type='submit'> {taskToEdit ? 'Edit Task' : 'Add Task'}</button>
         <button onClick={clearTasksList}>Clear</button>
       </form>
-      <TasksList />
+      <TasksList storyId={storyId}/>
     </div>
   );
 }

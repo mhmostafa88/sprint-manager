@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import AppProvider from './AppContext';
+import StoriesListContextProvider from './context/StoriesListContext';
 
 ReactDOM.render(
   <React.StrictMode>
-  <AppProvider>
+  <StoriesListContextProvider>
     <App />
-    </AppProvider>
+    </StoriesListContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,10 +1,8 @@
 import React, { useContext, useState, useEffect  } from "react";
-import { StoriesListContext } from "../context/StoriesListContext";
+import { TasksListContext } from "../context/TasksListContext";
 
-
-const StoriesForm = () => {
-
-    const { addStory, clearStoriesList, storyToEdit, editStory } = useContext(StoriesListContext);
+export const TasksForm = () => {
+    const { clearTasksList, taskToEdit, editTask } = useContext(TasksListContext);
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -23,10 +21,10 @@ const StoriesForm = () => {
     const handleSubmit = e => {
         e.preventDefault();
         // check if the submit is meant to edit an existing story
-        if(!storyToEdit) {
-            addStory(title, description, points)
+        if(!taskToEdit) {
+            addTask(title, description, points)
         } else {
-            editStory(storyToEdit.id,title, description, points)
+            editTask(taskToEdit.id,title, description, points)
         }
         
         setTitle('');
@@ -35,17 +33,17 @@ const StoriesForm = () => {
     }
 
     useEffect(() => {
-        if(storyToEdit) {
+        if(taskToEdit) {
             // we are in the process of editing an item
-            setTitle(storyToEdit.title);
-            setDescription(storyToEdit.description);
-            setPoints(storyToEdit.points);
+            setTitle(taskToEdit.title);
+            setDescription(taskToEdit.description);
+            setPoints(taskToEdit.points);
         } else {
             setTitle('');
             setDescription('');
             setPoints('');
         }
-    },[storyToEdit])
+    },[taskToEdit])
     
   return (
     <div>
@@ -75,11 +73,9 @@ const StoriesForm = () => {
           onChange={handlePointsChange}
           required
         />
-        <button type='submit'> {storyToEdit ? 'Edit Story' : 'Add Story'}</button>
-        <button onClick={clearStoriesList}>Clear</button>
+        <button type='submit'> {taskToEdit ? 'Edit Story' : 'Add Story'}</button>
+        <button onClick={clearTasksList}>Clear</button>
       </form>
     </div>
   );
 }
-
-export default StoriesForm;

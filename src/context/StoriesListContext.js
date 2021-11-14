@@ -1,37 +1,22 @@
-import { createContext, useState } from "react";
-import uuid from "uuid";
+import { createContext, useState, useEffect } from "react";
+import {v4 as uuidv4} from "uuid";
 
 export const StoriesListContext = createContext();
 
 const StoriesListContextProvider = (props) => {
-  const [stories, setStories] = useState([
-    {
-      id: 1,
-      title: "View Reports",
-      description:
-        "User can view each of the reports on its corresponding tab, filter by a particular",
-      points: 34,
-    },
-    {
-      id: 2,
-      title: "Pull Projections",
-      description:
-        "User can pull projections from Excel file with a click of  a button",
-      points: 20,
-    },
-    {
-      id: 3,
-      title: "Select Excel File",
-      description:
-        "User can select a particular Excel file in his sharepoint folder to pull projections from.",
-      points: 3,
-    },
-  ]);
+
+  const initialState = JSON.parse(localStorage.getItem('stories')) || [];
+
+  const [stories, setStories] = useState(initialState);
 
   const [storyToEdit, setstoryToEdit] = useState("");
 
+  useEffect(() => {
+    localStorage.setItem('stories', JSON.stringify(stories));
+  },[stories]);
+
   const addStory = (title, description, points) => {
-    setStories([...stories, { id: uuid(), title, description, points }]);
+    setStories([...stories, { id: uuidv4(), title, description, points }]);
   };
 
   const removeStory = (id) => {
@@ -53,6 +38,7 @@ const StoriesListContextProvider = (props) => {
     );
 
     setStories(newStories);
+    setstoryToEdit(null);
   };
 
   return (
@@ -65,7 +51,7 @@ const StoriesListContextProvider = (props) => {
           clearStoriesList,
           findEditStory,
           editStory,
-          storyToEdit
+          storyToEdit,
         }}
       >
         {props.children}

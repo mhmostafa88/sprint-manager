@@ -8,10 +8,10 @@ export const TasksForm = ({ storyId }) => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [pointsEmp1, setPointsEmp1] = useState('');
-    const [pointsEmp2, setPointsEmp2] = useState('');
-    const [pointsEmp3, setPointsEmp3] = useState('');
-    const [pointsEmp4, setPointsEmp4] = useState('');
+    const [pointsEmp1, setPointsEmp1] = useState(0);
+    const [pointsEmp2, setPointsEmp2] = useState(0);
+    const [pointsEmp3, setPointsEmp3] = useState(0);
+    const [pointsEmp4, setPointsEmp4] = useState(0);
 
     const handleTitleChange = e => {
         setTitle(e.target.value);
@@ -20,16 +20,16 @@ export const TasksForm = ({ storyId }) => {
         setDescription(e.target.value);
     }
     const handlePointsEmp1Change = e => {
-        setPointsEmp1(e.target.value);
+        setPointsEmp1(parseInt(e.target.value));
     }
     const handlePointsEmp2Change = e => {
-        setPointsEmp2(e.target.value);
+        setPointsEmp2(parseInt(e.target.value));
     }
     const handlePointsEmp3Change = e => {
-        setPointsEmp3(e.target.value);
+        setPointsEmp3(parseInt(e.target.value));
     }
     const handlePointsEmp4Change = e => {
-        setPointsEmp4(e.target.value);
+        setPointsEmp4(parseInt(e.target.value));
     }
 
     const handleSubmit = e => {
@@ -38,7 +38,8 @@ export const TasksForm = ({ storyId }) => {
         if(!taskToEdit) {
             addTask(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4)
         } else {
-            editTask(taskToEdit.id, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4)
+          console.log('task is getting editted');
+            editTask(taskToEdit.id, storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4)
         }
         
         setTitle('');
@@ -89,7 +90,7 @@ export const TasksForm = ({ storyId }) => {
           required
         />
         <input
-          type="text"
+          type="number"
           name="points"
           value={pointsEmp1}
           placeholder="points"
@@ -97,7 +98,7 @@ export const TasksForm = ({ storyId }) => {
           required
         />
         <input
-          type="text"
+          type="number"
           name="points"
           value={pointsEmp2}
           placeholder="points"
@@ -105,7 +106,7 @@ export const TasksForm = ({ storyId }) => {
           required
         />
         <input
-          type="text"
+          type="number"
           name="points"
           value={pointsEmp3}
           placeholder="points"
@@ -113,7 +114,7 @@ export const TasksForm = ({ storyId }) => {
           required
         />
         <input
-          type="text"
+          type="number"
           name="points"
           value={pointsEmp4}
           placeholder="points"

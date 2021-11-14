@@ -28,13 +28,13 @@ const TasksListContextProvider = (props) => {
   };
 
   const findEditTask= (id) => {
-    const story = tasks.find((task) => task.id === id);
-    setTaskToEdit(story);
+    const task = tasks.find((task) => task.id === id);
+    setTaskToEdit(task);
   };
 
-  const editTask = (id, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4) => {
+  const editTask = (id, storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4) => {
     const newTasks = tasks.map((task) =>
-      task.id === id ? { title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4 } : task
+      task.id === id ? { title, storyId, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4 } : task
     );
 
     setTasks(newTasks);
@@ -51,6 +51,8 @@ const TasksListContextProvider = (props) => {
           taskToEdit,
           editTask,
           removeTask,
+          setTasks,
+          findEditTask
         }}
       >
         {props.children}

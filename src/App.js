@@ -7,8 +7,8 @@ import TasksListContextProvider from "./context/TasksListContext";
 const App = () => {
   return (
     <StoriesListContextProvider>
-      <StoriesForm />
       <TasksListContextProvider>
+        <StoriesForm />
         <StoriesList />
       </TasksListContextProvider>
     </StoriesListContextProvider>

@@ -1,4 +1,5 @@
 import "./App.css";
+import { AppContainer } from "./App.style";
 import StoriesForm from "./components/StoriesForm";
 import StoriesList from "./components/StoriesList";
 import StoriesListContextProvider from "./context/StoriesListContext";
@@ -8,8 +9,10 @@ const App = () => {
   return (
     <StoriesListContextProvider>
       <TasksListContextProvider>
-        <StoriesForm />
-        <StoriesList />
+        <AppContainer>
+          <StoriesForm />
+          <StoriesList />
+        </AppContainer>
       </TasksListContextProvider>
     </StoriesListContextProvider>
   );

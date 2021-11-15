@@ -10,6 +10,7 @@ const Story = ({story}) => {
     const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
 
     const handleDelete = (storyId) => {
+        console.log("story id that should be deleted: " + storyId)
         removeStory(storyId);
         const tempTasks = tasks.filter((task) => 
             task.storyId !== storyId
@@ -19,6 +20,8 @@ const Story = ({story}) => {
     const handleTasksForm = (isOpen) => {
         setIsTaskFormOpen(isOpen);
     };
+    console.log({story});
+    console.log("story id : " + story.id);
 
     return (
         <li>
@@ -26,8 +29,8 @@ const Story = ({story}) => {
             <span>{story.description} : </span>
             <span>{story.points}</span>
             <div>
-                <button onClick={() => handleDelete(story.id)}>Delete</button>
                 <button onClick={() => findEditStory(story.id)}>Edit</button>
+                <button onClick={() => handleDelete(story.id)}>Delete</button>
                 { !isTaskFormOpen && 
                 <button onClick={() => handleTasksForm(true)}> 
                 Show Tasks
@@ -36,6 +39,7 @@ const Story = ({story}) => {
                 <button onClick={() => handleTasksForm(false)}> 
                 Hide Tasks
                 </button>}
+                
                 { isTaskFormOpen && <TasksForm storyId={story.id}/> }
                 
             </div>

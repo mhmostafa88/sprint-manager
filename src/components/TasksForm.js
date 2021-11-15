@@ -36,7 +36,8 @@ export const TasksForm = ({ storyId }) => {
         e.preventDefault();
         // check if the submit is meant to edit an existing story
         if(!taskToEdit) {
-            addTask(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4)
+            addTask(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4);
+            console.log(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4);
         } else {
           console.log('task is getting editted');
             editTask(taskToEdit.id, storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4)

@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect  } from "react";
+import { StyledButton } from "../App.style";
 import { StoriesListContext } from "../context/StoriesListContext";
+import { StoryForm } from "./StoryForm.style";
 
 
 const StoriesForm = () => {
@@ -8,16 +10,13 @@ const StoriesForm = () => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [points, setPoints] = useState('');
+    const [points, setPoints] = useState(0);
 
     const handleTitleChange = e => {
         setTitle(e.target.value);
     }
     const handleDescriptionChange = e => {
         setDescription(e.target.value);
-    }
-    const handlePointsChange = e => {
-        setPoints(e.target.value);
     }
 
     const handleSubmit = e => {
@@ -31,7 +30,7 @@ const StoriesForm = () => {
         
         setTitle('');
         setDescription('');
-        setPoints('');
+        setPoints(0);
     }
 
     useEffect(() => {
@@ -43,13 +42,13 @@ const StoriesForm = () => {
         } else {
             setTitle('');
             setDescription('');
-            setPoints('');
+            setPoints(0);
         }
     },[storyToEdit])
     
   return (
-    <div>
-      <h1>Insert Sprint Stories</h1>
+    <StoryForm>
+      <h1>Insert a new Story</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -59,26 +58,19 @@ const StoriesForm = () => {
           onChange={handleTitleChange}
           required
         />
-        <input
-          type="text"
+        <textarea
           name="description"
           value={description}
           placeholder="description"
           onChange={handleDescriptionChange}
           required
         />
-        <input
-          type="text"
-          name="points"
-          value={points}
-          placeholder="points"
-          onChange={handlePointsChange}
-          required
-        />
-        <button type='submit'> {storyToEdit ? 'Edit Story' : 'Add Story'}</button>
-        <button onClick={clearStoriesList}>Clear</button>
+        <StyledButton  color={storyToEdit ? '' : 'green'} type='submit'>
+        {storyToEdit ? 'Edit Story' : 'Add Story'}
+        </StyledButton>
+        <StyledButton color={'red'} onClick={clearStoriesList}>Clear</StyledButton>
       </form>
-    </div>
+      </StoryForm>
   );
 }
 

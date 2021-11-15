@@ -31,16 +31,17 @@ const StoriesList = () => {
           <span className="card-body">{storyPoints}</span>
         </SummaryCard>
       </div>
-      <h2>Stories in this sprint</h2>
+
+      <h2>Stories List</h2>
 
       {stories.length ? (
-        <ul>
+        <div>
           {stories.map((story) => {
             return <Story story={story} key={story.id} />;
           })}
-        </ul>
+        </div>
       ) : (
-        <div>No Tasks</div>
+        <div>No Stories</div>
       )}
     </StoriesListContainer>
   );

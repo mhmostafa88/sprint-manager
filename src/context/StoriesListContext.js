@@ -11,6 +11,7 @@ const StoriesListContextProvider = (props) => {
 
   const [storyToEdit, setstoryToEdit] = useState("");
 
+
   useEffect(() => {
     localStorage.setItem('stories', JSON.stringify(stories));
   },[stories]);

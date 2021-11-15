@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect  } from "react";
 import { TasksListContext } from "../context/TasksListContext";
 import TasksList from "./TasksList";
+import {TaskFormContainer} from './TasksForm.style'
+import { StyledButton } from "../App.style";
+import { StoriesListContext } from "../context/StoriesListContext";
 
-
-export const TasksForm = ({ storyId }) => {
+export const TasksForm = ({ storyId, handleIsFormOpen }) => {
     const { addTask, clearTasksList, taskToEdit, editTask } = useContext(TasksListContext);
 
     const [title, setTitle] = useState('');
@@ -12,6 +14,27 @@ export const TasksForm = ({ storyId }) => {
     const [pointsEmp2, setPointsEmp2] = useState(0);
     const [pointsEmp3, setPointsEmp3] = useState(0);
     const [pointsEmp4, setPointsEmp4] = useState(0);
+    const [isTaskFormVisible, setIsTaskFormVisible] = useState(true);
+    const { stories, editStory } = useContext(StoriesListContext);
+    const parentStory = stories.find(story => story.id === storyId);
+
+    const { tasks } = useContext(TasksListContext);
+
+    const storyTasks = tasks.filter((task) => task.storyId === storyId);
+  if (storyTasks) {
+    var storyPoints = storyTasks.reduce(function (acc, curr) {
+      return acc + curr.pointsEmp1 + curr.pointsEmp2 + curr.pointsEmp3 + curr.pointsEmp4;
+    }, 0)
+  }
+
+  useEffect(() => {
+    editStory(parentStory.id, parentStory.title, parentStory.description, storyPoints)
+  },[storyPoints])
+
+  const handleLocalIsFormOpen = (isOpen) => {
+    handleIsFormOpen(isOpen);
+    setIsTaskFormVisible(isOpen);
+  }
 
     const handleTitleChange = e => {
         setTitle(e.target.value);
@@ -32,12 +55,15 @@ export const TasksForm = ({ storyId }) => {
         setPointsEmp4(parseInt(e.target.value));
     }
 
+
+
     const handleSubmit = e => {
         e.preventDefault();
         // check if the submit is meant to edit an existing story
         if(!taskToEdit) {
             addTask(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4);
             console.log(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4);
+
         } else {
           console.log('task is getting editted');
             editTask(taskToEdit.id, storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4)
@@ -71,9 +97,14 @@ export const TasksForm = ({ storyId }) => {
     },[taskToEdit])
     
   return (
-    <div>
-      <h1>Insert Tasks</h1>
+    <TaskFormContainer visibility={isTaskFormVisible}>
+    {isTaskFormVisible &&
+    <> 
+    <div className="header">
+      <h4>Add new a task</h4> <StyledButton color={'red'}  className="btn--small" onClick={() => handleIsFormOpen(false)}>Cancel</StyledButton>
+      </div>
       <form onSubmit={handleSubmit}>
+      <div>
         <input
           type="text"
           placeholder="title"
@@ -90,11 +121,13 @@ export const TasksForm = ({ storyId }) => {
           onChange={handleDescriptionChange}
           required
         />
+        </div>
+        <div>
         <input
           type="number"
           name="points"
           value={pointsEmp1}
-          placeholder="points"
+          placeholder="Ibrahim points"
           onChange={handlePointsEmp1Change}
           required
         />
@@ -102,7 +135,7 @@ export const TasksForm = ({ storyId }) => {
           type="number"
           name="points"
           value={pointsEmp2}
-          placeholder="points"
+          placeholder="Lorand points"
           onChange={handlePointsEmp2Change}
           required
         />
@@ -110,7 +143,7 @@ export const TasksForm = ({ storyId }) => {
           type="number"
           name="points"
           value={pointsEmp3}
-          placeholder="points"
+          placeholder="Mahmoud points"
           onChange={handlePointsEmp3Change}
           required
         />
@@ -118,14 +151,16 @@ export const TasksForm = ({ storyId }) => {
           type="number"
           name="points"
           value={pointsEmp4}
-          placeholder="points"
+          placeholder="Ahmed points"
           onChange={handlePointsEmp4Change}
           required
         />
-        <button type='submit'> {taskToEdit ? 'Edit Task' : 'Add Task'}</button>
-        <button onClick={clearTasksList}>Clear</button>
+        <StyledButton color={taskToEdit? '' : 'green'} type='submit'> {taskToEdit ? 'Edit Task' : 'Add Task'}</StyledButton>
+        </div>
       </form>
-      <TasksList storyId={storyId}/>
-    </div>
+      
+    </>
+    }
+    </TaskFormContainer>
   );
 }

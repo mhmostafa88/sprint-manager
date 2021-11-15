@@ -1,84 +1,102 @@
 import styled from "styled-components";
 
+export const AppContainer = styled.div`
+  padding: 20px 30px;
+  font-family: Poppins;
+  color: var(--Text-Color-White);
 
-export const AppContainer = styled.div `
-
-
-
-
-padding: 20px 30px;
-font-family: Poppins;
-color: var(--Text-Color-White);
-
-h1 {
+  h1 {
     font-weight: 600;
     font-size: 34px;
-}
+  }
 
-h2 {
+  h2 {
     font-weight: 600;
-    font-size: 24px;
-}
+    font-size: 30px;
+  }
 
-h3 {
+  h3, .task__title {
     font-weight: 500;
-    font-size: 20px;
+    font-size: 27px;
 
     span {
-        color: var(--primary-color-Purple);
-        font-weight: bold;
+      color: var(--primary-color-Purple);
+      font-weight: bold;
     }
-    
-}
+  }
 
-h4 {
+  h4 {
     font-weight: 500;
     font-size: 17px;
 
     span {
-        color: var(--primary-color-Purple);
-        font-weight: bold;
+      color: var(--primary-color-Purple);
+      font-weight: bold;
     }
-    
-}
+  }
 
-
-
-input {
+  input {
     border-radius: 6px;
     height: 38px;
     padding-left: 15px;
-}
+    border: none;
+  }
 
-input::placeholder, textarea::placeholder {
+  input:focus {
+    outline: none;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
     font-size: 15px;
-}
+    color: var(--Text-Color-Grey);
+  }
 
-textarea {
+  textarea {
     border-radius: 6px;
     padding: 15px;
-}
+  }
 
-button {
-border-radius: 6px;
-}
+  button {
+    border-radius: 6px;
+  }
 
-.Big-Title {
+  .Big-Title {
     font-weight: 600;
     font-size: 52px;
-}
+  }
 
-button {
-height: 100%;
-border-radius: 6px;
-}
+  button {
+    height: 100%;
+    border-radius: 6px;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
 
-background-color: var(--primary-color-Dark);
+  background-color: var(--primary-color-BlackAccent);
 
 
+  .btn--small {
+    padding: 4px 8px;
+    width: auto;
+    font-size: 10px;
+    display:inline;
+  }
 `;
 
 export const StyledButton = styled.button `
-background-color: ${props => props.color === 'green' ? "var(--secondary-color-Green)" : props.color === 'red' ? "var(--secondary-color-Red)" : "var(--Text-Color-WhiteGrey)"};
-color: ${props => props.color === 'green' ? "var(--Text-Color-White)" : props.color === 'red'? "var(--Text-Color-White)" : "var(--Text-Color-DarkGrey)"};
+  background-color: ${(props) =>
+    props.color === "green"
+      ? "var(--secondary-color-Green)"
+      : props.color === "red"
+      ? "var(--secondary-color-Red)"
+      : "var(--Text-Color-WhiteGrey)"};
+  color: ${(props) =>
+    props.color === "green"
+      ? "var(--Text-Color-White)"
+      : props.color === "red"
+      ? "var(--Text-Color-White)"
+      : "var(--Text-Color-DarkGrey)"};
+
 `;

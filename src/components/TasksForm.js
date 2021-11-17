@@ -61,12 +61,10 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
         e.preventDefault();
         // check if the submit is meant to edit an existing story
         if(!taskToEdit) {
-            addTask(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4);
-            console.log(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4);
+            addTask(storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4, false, false, false, false);
 
         } else {
-          console.log('task is getting editted');
-            editTask(taskToEdit.id, storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4)
+            editTask(taskToEdit.id, taskToEdit.storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4, taskToEdit.isComplete1, taskToEdit.isComplete2, taskToEdit.isComplete3, taskToEdit.isComplete4)
         }
         
         setTitle('');

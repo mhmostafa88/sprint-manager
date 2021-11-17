@@ -14,7 +14,6 @@ const Story = ({story}) => {
     const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
 
     const handleDelete = (storyId) => {
-        console.log("story id that should be deleted: " + storyId)
         removeStory(storyId);
         const tempTasks = tasks.filter((task) => 
             task.storyId !== storyId
@@ -32,9 +31,6 @@ const Story = ({story}) => {
     const handleIsFormOpen = (IsFormOpen) => {
         setIsTaskFormOpen(IsFormOpen);
       }
-
-    console.log({story});
-    console.log("story id : " + story.id);
 
     return (
         <StoryContainer>

@@ -18,7 +18,6 @@ const StoriesListContextProvider = (props) => {
 
   const addStory = (title, description, points) => {
     setStories([...stories, { id: uuidv4(), title, description, points }]);
-    console.log('stories: ' + stories)
   };
 
   const removeStory = (id) => {
@@ -42,6 +41,8 @@ const StoriesListContextProvider = (props) => {
     setStories(newStories);
     setstoryToEdit(null);
   };
+
+
 
   return (
     <div>

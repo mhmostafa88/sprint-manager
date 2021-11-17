@@ -1,0 +1,12 @@
+Click any of the task objects
+
+popup appears, prompting me to enter the following:
+
+1- how many points completed?
+3- description
+
+The app should already know who completed the points.
+A new entry ('completed points') to the database should indicate a tasks's completed points ..
+..(if the task doesn't exist then create it) and the task id (of the task itself)
+
+This should be followed by calculating the 'Total Completed Points' across the sprint.

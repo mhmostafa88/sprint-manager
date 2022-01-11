@@ -17,6 +17,21 @@ margin-bottom: 25px;
     gap: 10px;
     margin-block-start: 0px !important;
     margin-block-end: 0px !important;
+
+    h3 {
+        display:flex;
+        align-items: center;
+        svg {
+            margin-right: 10px;
+        }
+        svg:hover{
+            color:var(--Text-Color-DarkPurple);
+        }
+    }
+}
+
+p {
+    margin-left: 15px;
 }
 
 .action-btns-container { 

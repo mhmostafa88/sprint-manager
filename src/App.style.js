@@ -57,10 +57,6 @@ export const AppContainer = styled.div`
     padding: 15px;
   }
 
-  button {
-    border-radius: 6px;
-  }
-
   .Big-Title {
     font-weight: 600;
     font-size: 52px;
@@ -72,7 +68,13 @@ export const AppContainer = styled.div`
     border: none;
     padding: 8px 15px;
     cursor: pointer;
+    display: flex;
+align-items: center;
   }
+
+  button svg {
+    margin-right: 10px;
+}
 
   background-color: var(--primary-color-BlackAccent);
 
@@ -86,6 +88,8 @@ export const AppContainer = styled.div`
 `;
 
 export const StyledButton = styled.button `
+
+line-height: 20px;
   background-color: ${(props) =>
     props.color === "green"
       ? "var(--secondary-color-Green)"

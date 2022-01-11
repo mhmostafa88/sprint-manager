@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect  } from "react";
+import { FaPlus } from "react-icons/fa";
 import { StyledButton } from "../App.style";
 import { StoriesListContext } from "../context/StoriesListContext";
 import { StoryForm } from "./StoryForm.style";
@@ -11,6 +12,11 @@ const StoriesForm = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [points, setPoints] = useState(0);
+    const [isStoryFormVisible, setIsStoryFormVisible] = useState(false);
+
+    const toggleVisibility = () => {
+      setIsStoryFormVisible(!isStoryFormVisible);
+    }
 
     const handleTitleChange = e => {
         setTitle(e.target.value);
@@ -47,6 +53,13 @@ const StoriesForm = () => {
     },[storyToEdit])
     
   return (
+    <>
+
+    {isStoryFormVisible ? 
+    <>
+    <button onClick={toggleVisibility}>
+      Cancel Story Add
+    </button>
     <StoryForm>
       <h1>Insert a new Story</h1>
       <form onSubmit={handleSubmit}>
@@ -71,6 +84,12 @@ const StoriesForm = () => {
         <StyledButton color={'red'} onClick={clearStoriesList}>Clear</StyledButton>
       </form>
       </StoryForm>
+      </>
+      :
+      <StyledButton onClick={toggleVisibility}>
+        <FaPlus style={{color: "var(--Text-Color-Purple)"}} /> Add Story
+      </StyledButton>}
+      </>
   );
 }
 

@@ -1,22 +1,25 @@
 
 :root {
     --primary-color-Purple: hsl(250, 24%, 48%);
-    --primary-color-PurpleLight: hsl(252, 32%, 82%);
+    --primary-color-PurpleLight: hsl(250, 56%, 92%);
     --primary-color-Dark: #121212;
     --primary-color-BlackAccent: #110933;
     --secondary-color-Yellow: #F6C949;
     --secondary-color-Red: #FF7256;
     --secondary-color-Green: #3BC963;
+    --secondary-color-LightGreen: #95f8df;
     --secondary-color-Orange: #FF6B2C;
     --secondary-color-Blue:  #1D92F1;
 
     --Text-Color-Black: #25546F;
     --Text-Color-DarkGrey: #696974;
-    --Text-Color-Grey:#bcbcc2;
+    --Text-Color-Grey:#96969b;
     --Text-Color-LineDark: #EAEAEA;
     --Text-Color-WhiteGrey: #F1F1F5;
     --Text-Color-White: #FAF9F6;
-    --Text-Color-Purple: hsl(250, 55%, 25%);;
+    --Text-Color-Purple: hsl(250, 55%, 25%);
+    --Text-Color-DarkPurple: hsl(249, 84%, 17%)
+    ;
 
     
 }
@@ -24,3 +27,4 @@
 * {
     box-sizing: border-box;
 }
+

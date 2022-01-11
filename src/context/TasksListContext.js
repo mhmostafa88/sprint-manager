@@ -1,9 +1,12 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import {v4 as uuidv4} from "uuid";
+import { PointsContainerContext } from "./PointsContainerContext";
 
 export const TasksListContext = createContext();
 
 const TasksListContextProvider = (props) => {
+
+  const { addPointsContainer, deletePointsContainer, PointsContainers,editPointsContainer, getPointsContainer } = useContext(PointsContainerContext);
 
   const initialState = JSON.parse(localStorage.getItem('Tasks')) || [];
 
@@ -15,16 +18,25 @@ const TasksListContextProvider = (props) => {
     localStorage.setItem('Tasks', JSON.stringify(tasks));
   },[tasks]);
 
-  const addTask = (storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4) => {
-    setTasks([...tasks, { id: uuidv4(), storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4 }]);
+
+  useEffect(() => {
+    localStorage.setItem('PointsContainer', JSON.stringify(PointsContainers))
+  })
+
+  const addTask = (storyId, title, description, employee, points) => {
+    const newId = uuidv4()
+    setTasks([...tasks, { id: newId, storyId, title, description, employee, points }]);
+    addPointsContainer(newId, employee, points, false);
   };
 
   const removeTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
+    deletePointsContainer(id);
   };
 
-  const clearTasksList = () => {
-    setTasks([]);
+  const clearTasksList = (storyId) => {
+    const tasksToDelete = tasks.filter((task) => task.storyId === storyId)
+    tasksToDelete.map(task => removeTask(task.id))
   };
 
   const findEditTask= (id) => {
@@ -32,14 +44,17 @@ const TasksListContextProvider = (props) => {
     setTaskToEdit(task);
   };
 
-  const editTask = (id, storyId, title, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4) => {
+  const editTask = (id, storyId, title, description, employee, points) => {
     const newTasks = tasks.map((task) =>
-      task.id === id ? { title, storyId, description, pointsEmp1, pointsEmp2, pointsEmp3, pointsEmp4 } : task
+      task.id === id ? { id, title, storyId, description, employee, points } : task
     );
 
     setTasks(newTasks);
     setTaskToEdit(null);
   };
+
+
+  
 
   return (
     <div>

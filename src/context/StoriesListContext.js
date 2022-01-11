@@ -16,8 +16,8 @@ const StoriesListContextProvider = (props) => {
     localStorage.setItem('stories', JSON.stringify(stories));
   },[stories]);
 
-  const addStory = (title, description, points) => {
-    setStories([...stories, { id: uuidv4(), title, description, points }]);
+  const addStory = (title, description, points, completedPoints) => {
+    setStories([...stories, { id: uuidv4(), title, description, points, completedPoints }]);
   };
 
   const removeStory = (id) => {
@@ -33,9 +33,9 @@ const StoriesListContextProvider = (props) => {
     setstoryToEdit(story);
   };
 
-  const editStory = (id, title, description, points) => {
+  const editStory = (id, title, description, points, completedPoints) => {
     const newStories = stories.map((story) =>
-      story.id === id ? { id, title, description, points } : story
+      story.id === id ? { id, title, description, points, completedPoints } : story
     );
 
     setStories(newStories);

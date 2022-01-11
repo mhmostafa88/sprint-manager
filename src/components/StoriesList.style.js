@@ -1,12 +1,38 @@
 import styled from "styled-components";
 
 export const StoriesListContainer = styled.div `
-margin-top: 30px;
+
+height: auto;
 
 .sprint-summary {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 30px;
+}
+
+.Sprint-Options{
+    button {
+        color:var(--Text-Color-Purple);
+    }
+    svg {
+        margin-right: 10px;
+        color: var(--Text-Color-Purple);
+    }
+}
+
+.CalenderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    height: auto;
+}
+
+.CalenderSectionContainer {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0px;
+    height: auto;
 }
 `;
 

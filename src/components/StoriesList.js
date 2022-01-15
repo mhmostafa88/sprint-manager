@@ -9,7 +9,7 @@ import { StyledButton } from '../App.style';
 import BurnDownChart from './BurnDownChart';
 import {CategoryScale} from 'chart.js';
 import Chart from 'chart.js/auto'
-import { greatestIndex } from 'd3';
+
 Chart.register(CategoryScale)
 
 const StoriesList = () => {

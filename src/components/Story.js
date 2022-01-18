@@ -6,7 +6,7 @@ import StoriesForm from './StoriesForm';
 import { StoryContainer } from './Story.style';
 import { TasksForm } from './TasksForm';
 import TasksList from './TasksList';
-import { FaAngleDoubleDown, FaAngleDoubleUp } from 'react-icons/fa';
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaPen, FaTimes, FaPlus } from 'react-icons/fa';
 
 const Story = ({ story }) => {
   const { removeStory, findEditStory } = useContext(StoriesListContext);
@@ -15,6 +15,8 @@ const Story = ({ story }) => {
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
 
   const handleDelete = (storyId) => {
+    // console.log(storyId);
+    // debugger
     removeStory(storyId);
     clearTasksList(storyId);
   };
@@ -50,38 +52,39 @@ const Story = ({ story }) => {
         </h3>
 
         <div className="action-btns-container">
-          <StyledButton
-            className="btn--small"
-            color={'red'}
-            onClick={() => handleDelete(story.id)}
-          >
-            Delete Story
-          </StyledButton>
-          <StyledButton
-            className="btn--small"
-            onClick={() => findEditStory(story.id)}
-          >
-            Edit Story
-          </StyledButton>
-
-          {!isTaskFormOpen && (
+        {!isTaskFormOpen && (
             <StyledButton
               className="btn--small"
               color={'green'}
               onClick={() => handleIsFormOpen(true)}
             >
-              Add Tasks
+              <FaPlus />
             </StyledButton>
           )}
+          <StyledButton
+            className="btn--small"
+            onClick={() => findEditStory(story._id)}
+          >
+            <FaPen />
+          </StyledButton>
+
+          
+          <StyledButton
+            className="btn--small"
+            color={'red'}
+            onClick={() => handleDelete(story._id)}
+          >
+            <FaTimes />
+          </StyledButton>
         </div>
       </div>
       <p>{story.description}</p>
 
       {isTaskFormOpen && (
-        <TasksForm storyId={story.id} handleIsFormOpen={handleIsFormOpen} />
+        <TasksForm storyId={story._id} handleIsFormOpen={handleIsFormOpen} />
       )}
       {isTaskListOpen && (
-        <TasksList storyId={story.id} handleIsFormOpen={handleIsFormOpen} />
+        <TasksList storyId={story._id} handleIsFormOpen={handleIsFormOpen} />
       )}
     </StoryContainer>
   );

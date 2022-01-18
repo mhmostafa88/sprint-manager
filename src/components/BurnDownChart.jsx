@@ -5,15 +5,10 @@ Chart.register(CategoryScale)
 function BurnDownChart({data}) {
   return (
     <div className="App">
-      <h1>GEEKSFORGEEKS BAR CHART REACTJS</h1>
-      <div style={{ maxWidth: '650px' }}>
+      <h1>Burn Down Chart</h1>
+      <div style={{ maxWidth: '350px' }}>
         <Bar
           data={data}
-          options={{plugins: {
-            labels: {
-              fontColor: 'red'
-            }
-          }}}
           // Height of graph
           height={400}
         />

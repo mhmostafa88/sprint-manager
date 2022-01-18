@@ -5,6 +5,7 @@ import { TaskFormContainer } from './TasksForm.style';
 import { StyledButton } from '../App.style';
 import { StoriesListContext } from '../context/StoriesListContext';
 import { PointsContainerContext } from '../context/PointsContainerContext';
+import { FaPen, FaPlus, FaTimes } from 'react-icons/fa';
 
 export const TasksForm = ({ storyId, handleIsFormOpen }) => {
   const { tasks, addTask, clearTasksList, taskToEdit, editTask } =
@@ -21,10 +22,6 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
   const { stories, editStory } = useContext(StoriesListContext);
   const parentStory = stories.find((story) => story.id === storyId);
   const [storyPoints, setStoryPoints] = useState(parentStory.points)
-
-  
-
-  
 
   const handleLocalIsFormOpen = (isOpen) => {
     handleIsFormOpen(isOpen);
@@ -112,13 +109,13 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
       {isTaskFormVisible && (
         <>
           <div className="header">
-            <h4>Add new a task</h4>{' '}
+            <h4>{taskToEdit ? 'Edit Task' : 'Add a new task'}</h4>{' '}
             <StyledButton
               color={'red'}
               className="btn--small"
               onClick={() => handleIsFormOpen(false)}
             >
-              Cancel
+              <FaTimes />
             </StyledButton>
           </div>
           <form onSubmit={handleSubmit}>
@@ -158,9 +155,10 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
                 onChange={handlePointsChange}
                 required
               />
-              <StyledButton color={taskToEdit ? '' : 'green'} type="submit">
+              <StyledButton className="btn--med " color={taskToEdit ? '' : 'green'} type="submit">
                 {' '}
-                {taskToEdit ? 'Edit Task' : 'Add Task'}
+                {taskToEdit ? <FaPen /> : <FaPlus />}
+
               </StyledButton>
             </div>
           </form>

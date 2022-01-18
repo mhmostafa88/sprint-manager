@@ -12,7 +12,6 @@ const App = () => {
     <StoriesListContextProvider>
       <TasksListContextProvider>
         <AppContainer>
-          <StoriesForm />
           <StoriesList />
         </AppContainer>
       </TasksListContextProvider>

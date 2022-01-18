@@ -64,16 +64,15 @@ export const AppContainer = styled.div`
 
   button {
     height: 100%;
-    border-radius: 6px;
+    border-radius: 9px;
     border: none;
     padding: 8px 15px;
     cursor: pointer;
     display: flex;
 align-items: center;
   }
-
-  button svg {
-    margin-right: 10px;
+.btn-svg-text svg {
+  margin-right: 10px;
 }
 
   background-color: var(--primary-color-BlackAccent);
@@ -82,14 +81,24 @@ align-items: center;
   .btn--small {
     padding: 4px 8px;
     width: auto;
-    font-size: 10px;
+    font-size: 15px;
+    display:inline;
+    line-height: 10px;
+    height: 30px;
+  }
+
+  .btn--med {
+    padding: 10px 15px;
+    width: auto;
+    font-size: 18px;
     display:inline;
   }
+
+
 `;
 
 export const StyledButton = styled.button `
 
-line-height: 20px;
   background-color: ${(props) =>
     props.color === "green"
       ? "var(--secondary-color-Green)"

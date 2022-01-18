@@ -47,4 +47,10 @@ h4 {
     color: var(--Text-Color-Purple);
 }
 
+button svg {
+    margin: 0;
+}
+
+
+
 `;

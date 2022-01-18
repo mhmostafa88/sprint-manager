@@ -6,6 +6,7 @@ import { TasksForm } from './TasksForm';
 import { TaskContainer } from './TasksList.style';
 import TaskPointsContainer from './TaskPointsContainer';
 import { PointsContainerContext } from '../context/PointsContainerContext';
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaPen, FaTimes, FaPlus } from 'react-icons/fa';
 
 const Task = ({ task, handleIsFormOpen }) => {
   const { removeTask, findEditTask } = useContext(TasksListContext);
@@ -32,13 +33,13 @@ const Task = ({ task, handleIsFormOpen }) => {
             color={'red'}
             onClick={() => removeTask(task.id)}
           >
-            Delete Task
+            <FaTimes />
           </StyledButton>
           <StyledButton
             className="btn--small"
             onClick={() => handleLocalIsFormOpen(true, task.id)}
           >
-            Edit Task
+            <FaPen />
           </StyledButton>
         </div>
         <div className="task__description">Description: {task.description}</div>

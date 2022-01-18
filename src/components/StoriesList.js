@@ -9,6 +9,7 @@ import { StyledButton } from '../App.style';
 import BurnDownChart from './BurnDownChart';
 import {CategoryScale} from 'chart.js';
 import Chart from 'chart.js/auto'
+import StoriesForm from './StoriesForm';
 
 Chart.register(CategoryScale)
 
@@ -19,7 +20,7 @@ const StoriesList = () => {
   const [sprintStartDate, setSprintStartDate] = useState(moment(JSON.parse(localStorage.getItem('sprintStartDate')) || []));
   const [sprintEndDate, setSprintEndDate] = useState(moment(JSON.parse(localStorage.getItem('sprintEndDate')) || []));
   const [sprintDaysCount, setSprintDaysCount] = useState(sprintEndDate.diff(sprintStartDate, 'days'));
-  
+
   const completedStoryPoints = stories.reduce(function (acc, curr) {
     return acc + curr.completedPoints;
   }, 0);
@@ -89,7 +90,7 @@ var enumerateStoryPointsBetweenDates = function(startDate, endDate) {
       {
         // Data or value of your each variable
         data: dataset,
-        backgroundColor:"red"
+        backgroundColor:"hsl(250, 24%, 48%)"
       },
     ],
   }
@@ -140,12 +141,15 @@ var enumerateStoryPointsBetweenDates = function(startDate, endDate) {
       </div>
       
 <BurnDownChart data={data} />
+
       <h2>Stories List</h2>
+
+      <StoriesForm />
 
       {stories.length ? (
         <div>
           {stories.map((story) => {
-            return <Story story={story} key={story.id} />;
+            return <Story story={story} key={story._id} />;
           })}
         </div>
       ) : (

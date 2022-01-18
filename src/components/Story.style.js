@@ -37,11 +37,11 @@ p {
 .action-btns-container { 
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 5px;
 }
 
-button {
-    width: 140px;
+button svg {
+    margin:0;
 }
 
 `;

@@ -1,17 +1,18 @@
 import React, { useContext, useState, useEffect  } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaPen, FaPlus, FaTimes } from "react-icons/fa";
 import { StyledButton } from "../App.style";
 import { StoriesListContext } from "../context/StoriesListContext";
 import { StoryForm } from "./StoryForm.style";
-
+import { useNavigate } from 'react-router';
 
 const StoriesForm = () => {
-
+const navigate = useNavigate();
     const { addStory, clearStoriesList, storyToEdit, editStory } = useContext(StoriesListContext);
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [points, setPoints] = useState(0);
+    const [completedPoints, setCompletedPoints] = useState(0);
     const [isStoryFormVisible, setIsStoryFormVisible] = useState(false);
 
     const toggleVisibility = () => {
@@ -29,9 +30,10 @@ const StoriesForm = () => {
         e.preventDefault();
         // check if the submit is meant to edit an existing story
         if(!storyToEdit) {
-            addStory(title, description, points)
+            addStory(title, description, 0, 0)
+            navigate("/");
         } else {
-            editStory(storyToEdit.id,title, description, points)
+            editStory(storyToEdit._id,title, description, points, completedPoints)
         }
         
         setTitle('');
@@ -45,10 +47,12 @@ const StoriesForm = () => {
             setTitle(storyToEdit.title);
             setDescription(storyToEdit.description);
             setPoints(storyToEdit.points);
+            setCompletedPoints(storyToEdit.completedPoints);
         } else {
             setTitle('');
             setDescription('');
             setPoints(0);
+            setCompletedPoints(0);
         }
     },[storyToEdit])
     
@@ -57,10 +61,11 @@ const StoriesForm = () => {
 
     {isStoryFormVisible ? 
     <>
+    
+    <StoryForm>
     <button onClick={toggleVisibility}>
       Cancel Story Add
     </button>
-    <StoryForm>
       <h1>Insert a new Story</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -78,17 +83,21 @@ const StoriesForm = () => {
           onChange={handleDescriptionChange}
           required
         />
-        <StyledButton  color={storyToEdit ? '' : 'green'} type='submit'>
-        {storyToEdit ? 'Edit Story' : 'Add Story'}
+        <StyledButton className="btn--med" color={storyToEdit ? '' : 'green'} type='submit'>
+        {storyToEdit ? <FaPen /> : <FaPlus />}
         </StyledButton>
-        <StyledButton color={'red'} onClick={clearStoriesList}>Clear</StyledButton>
+        <StyledButton className="btn--med" color={'red'} onClick={clearStoriesList}><FaTimes /></StyledButton>
       </form>
       </StoryForm>
       </>
       :
-      <StyledButton onClick={toggleVisibility}>
+      <StoryForm>
+      <StyledButton className="btn-svg-text" onClick={toggleVisibility}>
         <FaPlus style={{color: "var(--Text-Color-Purple)"}} /> Add Story
-      </StyledButton>}
+      </StyledButton>
+      </StoryForm>
+      
+      }
       </>
   );
 }

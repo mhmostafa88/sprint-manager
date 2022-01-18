@@ -9,11 +9,13 @@ flex-direction: column;
 position: relative;
 width: 100%;
 
+margin-bottom: 20px;
+
 form {
     position: relative;
     display:flex;
     flex-direction:row;
-    gap: 20px;
+    gap: 10px;
     height: 55px;
     width:100%;
 }

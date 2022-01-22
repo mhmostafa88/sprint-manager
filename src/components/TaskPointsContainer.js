@@ -1,27 +1,20 @@
 import React, { useContext, useState } from "react";
-import { PointsContainerContext } from "../context/PointsContainerContext";
 import { TaskPointsCard } from "./Task.style";
+import { TasksListContext } from '../context/TasksListContext';
+function TaskPointsContainer({ task }) {
 
-function TaskPointsContainer({id, taskId, empName, points, isComplete}) {
-
-    // const {id, taskId, empName, points} = PointsContainer;
-
-const { setCompletedPointsContainer } = useContext(PointsContainerContext);
-
-
-
-const [completed, setCompleted] = useState(isComplete);
-
+const { editTask } = useContext(TasksListContext);
+const [completed, setCompleted] = useState(task.isComplete);
 
 const handleCLick = () => {
   setCompleted(!completed)
-  setCompletedPointsContainer(id, completed)
+  editTask(task._id, task.storyId, task.title, task.description, task.points, task.employee, completed)
 }
 
   return (
     <TaskPointsCard isComplete={completed} onClick={handleCLick}>
-      <div> {empName} </div>
-      <div> {points} points</div>
+      <div> {task.employee} </div>
+      <div> {task.points} points</div>
     </TaskPointsCard>
   );
 }

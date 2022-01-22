@@ -14,7 +14,7 @@ import StoriesForm from './StoriesForm';
 Chart.register(CategoryScale)
 
 const StoriesList = () => {
-  const { stories } = useContext(StoriesListContext);
+  const { stories, storyToEdit } = useContext(StoriesListContext);
   const [showSprintPeriodForm, setShowSprintPeriodForm] = useState(false);
   const today = moment();
   const [sprintStartDate, setSprintStartDate] = useState(moment(JSON.parse(localStorage.getItem('sprintStartDate')) || []));
@@ -144,7 +144,7 @@ var enumerateStoryPointsBetweenDates = function(startDate, endDate) {
 
       <h2>Stories List</h2>
 
-      <StoriesForm />
+      <StoriesForm isVisibleFoEdit={!!storyToEdit}/>
 
       {stories.length ? (
         <div>

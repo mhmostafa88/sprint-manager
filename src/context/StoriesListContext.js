@@ -1,52 +1,47 @@
-import { createContext, useState, useEffect } from "react";
-import {v4 as uuidv4} from "uuid";
+import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const StoriesListContext = createContext();
 
 const StoriesListContextProvider = (props) => {
-  const url = "http://localhost:3001/api/v1/stories";
+  const url = 'http://localhost:3001/api/v1/stories';
 
   const [stories, setStories] = useState([]);
-  const getStoriesList = () => {
   
+  const getStoriesList = () => {
     const AssignData = (data) => {
-      if(data.status === 200)
-      setStories(data.data.stories);
-    }
+      if (data.status === 200) setStories(data.data.stories);
+    };
     const getData = (url) => {
-      try{
+      try {
         axios.get(url).then((data) => AssignData(data));
-      }catch(err){
+      } catch (err) {
         console.error(err);
         process.exitCode = 1;
       }
-    }
-  
+    };
+
     return getData(url);
-    
-  }
-  
+  };
 
-useEffect(() => {
-
-  getStoriesList()
-
-},[])
-  
+  useEffect(() => {
+    getStoriesList();
+  }, []);
 
   // const initialState = getInitialStoriesList().then(output => console.log(output.data['stories']))
-  
 
-  const [storyToEdit, setstoryToEdit] = useState("");
+  const [storyToEdit, setstoryToEdit] = useState('');
 
-  async function addStory (title, description, points, completedPoints) {
-
-  axios.post("http://localhost:3001/api/v1/stories", {
-    title, description, points, completedPoints
-  }).then(getStoriesList());
-
-  };
+  async function addStory(title, description, points, completedPoints) {
+    axios
+      .post(url, {
+        title,
+        description,
+        points,
+        completedPoints,
+      })
+      .then(getStoriesList());
+  }
 
   const removeStory = (id) => {
     axios.delete(`${url}/${id}`).then(getStoriesList());
@@ -58,23 +53,23 @@ useEffect(() => {
 
   const findEditStory = (id) => {
     const AssignData = (data) => {
-      if(data.status === 200)
-      setstoryToEdit(data.data.story)
-    }
-    axios.get(`${url}/${id}`).then((data) => AssignData(data))
+      if (data.status === 200) setstoryToEdit(data.data.story);
+    };
+    axios.get(`${url}/${id}`).then((data) => AssignData(data));
     // const story = stories.find((story) => story.id === id);
-    ;
   };
 
   const editStory = (id, title, description, points, completedPoints) => {
-    const newStories = stories.map((story) =>
-      story._id === id ? { id, title, description, points, completedPoints } : story
-    );
+    axios.patch(`${url}/${id}`, {
+      id,
+      title,
+      description,
+      points,
+      completedPoints,
+    }).then(getStoriesList());
 
-    setStories(newStories);
     setstoryToEdit(null);
   };
-
 
 
   return (
@@ -88,6 +83,7 @@ useEffect(() => {
           findEditStory,
           editStory,
           storyToEdit,
+          getStoriesList
         }}
       >
         {props.children}

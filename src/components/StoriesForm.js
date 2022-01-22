@@ -5,15 +5,17 @@ import { StoriesListContext } from "../context/StoriesListContext";
 import { StoryForm } from "./StoryForm.style";
 import { useNavigate } from 'react-router';
 
-const StoriesForm = () => {
+const StoriesForm = ({isVisibleFoEdit}) => {
 const navigate = useNavigate();
-    const { addStory, clearStoriesList, storyToEdit, editStory } = useContext(StoriesListContext);
+    const { addStory, clearStoriesList, storyToEdit, editStory, getStoriesList } = useContext(StoriesListContext);
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [points, setPoints] = useState(0);
     const [completedPoints, setCompletedPoints] = useState(0);
     const [isStoryFormVisible, setIsStoryFormVisible] = useState(false);
+    
+
 
     const toggleVisibility = () => {
       setIsStoryFormVisible(!isStoryFormVisible);
@@ -33,7 +35,7 @@ const navigate = useNavigate();
             addStory(title, description, 0, 0)
             navigate("/");
         } else {
-            editStory(storyToEdit._id,title, description, points, completedPoints)
+            editStory(storyToEdit._id,title, description, points, storyToEdit.completedPoints)
         }
         
         setTitle('');
@@ -59,7 +61,7 @@ const navigate = useNavigate();
   return (
     <>
 
-    {isStoryFormVisible ? 
+    {isStoryFormVisible || isVisibleFoEdit ? 
     <>
     
     <StoryForm>

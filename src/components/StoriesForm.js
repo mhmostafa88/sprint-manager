@@ -15,8 +15,6 @@ const navigate = useNavigate();
     const [completedPoints, setCompletedPoints] = useState(0);
     const [isStoryFormVisible, setIsStoryFormVisible] = useState(false);
     
-
-
     const toggleVisibility = () => {
       setIsStoryFormVisible(!isStoryFormVisible);
     }
@@ -35,7 +33,7 @@ const navigate = useNavigate();
             addStory(title, description, 0, 0)
             navigate("/");
         } else {
-            editStory(storyToEdit._id,title, description, points, storyToEdit.completedPoints)
+            editStory(storyToEdit._id,title, description)
         }
         
         setTitle('');

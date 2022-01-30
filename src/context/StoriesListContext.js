@@ -11,6 +11,7 @@ const StoriesListContextProvider = (props) => {
   const getStoriesList = () => {
     const AssignData = (data) => {
       if (data.status === 200) setStories(data.data.stories);
+      console.log("now the list should be updated to " + stories)
     };
     const getData = (url) => {
       try {
@@ -56,19 +57,25 @@ const StoriesListContextProvider = (props) => {
       if (data.status === 200) setstoryToEdit(data.data.story);
     };
     axios.get(`${url}/${id}`).then((data) => AssignData(data));
-    // const story = stories.find((story) => story.id === id);
   };
 
-  const editStory = (id, title, description, points, completedPoints) => {
+  const editStory = (id, title, description) => {
+
     axios.patch(`${url}/${id}`, {
       id,
       title,
       description,
+    }).then(setstoryToEdit(null))
+    .then(getStoriesList());
+  };
+
+  const editStoryPoints = (id, points, completedPoints) => {
+
+    axios.patch(`${url}/${id}`, {
       points,
       completedPoints,
-    }).then(getStoriesList());
-
-    setstoryToEdit(null);
+    }).then(setstoryToEdit(null))
+    .then(getStoriesList());
   };
 
 
@@ -82,6 +89,7 @@ const StoriesListContextProvider = (props) => {
           clearStoriesList,
           findEditStory,
           editStory,
+          editStoryPoints,
           storyToEdit,
           getStoriesList
         }}

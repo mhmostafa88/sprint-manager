@@ -10,27 +10,31 @@ import { FaAngleDoubleDown, FaAngleDoubleUp, FaPen, FaTimes, FaPlus } from 'reac
 
 const Story = ({ story }) => {
   const { removeStory, findEditStory } = useContext(StoriesListContext);
-  const { clearTasksList, tasks, setTasks } = useContext(TasksListContext);
+  const { getStoryCompletedPoints, getStoryPoints } = useContext(TasksListContext);
+  const { clearTasksList, tasks, setTasks, setTaskToEdit } = useContext(TasksListContext);
   const [isTaskListOpen, setIsTaskListOpen] = useState(false);
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
+  const [completedPoints, setCompletedPoints] = useState(getStoryCompletedPoints(story._Id));
+  const [points, setPoints] = useState(getStoryPoints(story._Id));
 
   const handleDelete = (storyId) => {
-    // console.log(storyId);
-    // debugger
+
     removeStory(storyId);
     clearTasksList(storyId);
-  };
-  const handleTasksForm = (isOpen) => {
-    setIsTaskFormOpen(isOpen);
   };
 
   const handleTaskList = (isOpen) => {
     setIsTaskListOpen(isOpen);
   };
 
-  const handleIsFormOpen = (IsFormOpen) => {
+  const handleOpenAddForm = (IsFormOpen) => {
+    setTaskToEdit(null);
     setIsTaskFormOpen(IsFormOpen);
   };
+
+  const handleToggleTaskForm = (isTaskFormOpen) => {
+    setIsTaskFormOpen(isTaskFormOpen)
+  }
 
   return (
     <StoryContainer>
@@ -43,10 +47,10 @@ const Story = ({ story }) => {
             <FaAngleDoubleUp onClick={() => handleTaskList(false)} />
           )}
           {story.title} (
-          {story.completedPoints > 0 ? `${story.completedPoints}/` : ''}
+          {story.completedPoints > 0 ? `${completedPoints}/` : ''}
           {story.points} points)
           {story.completedPoints > 0
-            ? Math.floor((story.completedPoints / story.points) * 100) +
+            ? Math.floor((completedPoints / points) * 100) +
               '% completed'
             : ''}
         </h3>
@@ -56,7 +60,7 @@ const Story = ({ story }) => {
             <StyledButton
               className="btn--small"
               color={'green'}
-              onClick={() => handleIsFormOpen(true)}
+              onClick={() => handleOpenAddForm(true)}
             >
               <FaPlus />
             </StyledButton>
@@ -81,10 +85,10 @@ const Story = ({ story }) => {
       <p>{story.description}</p>
 
       {isTaskFormOpen && (
-        <TasksForm storyId={story._id} handleIsFormOpen={handleIsFormOpen} />
+        <TasksForm storyId={story._id} handleIsFormOpen={handleToggleTaskForm} />
       )}
       {isTaskListOpen && (
-        <TasksList storyId={story._id} handleIsFormOpen={handleIsFormOpen} />
+        <TasksList storyId={story._id} handleIsFormOpen={handleToggleTaskForm} />
       )}
     </StoryContainer>
   );

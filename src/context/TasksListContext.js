@@ -1,31 +1,32 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { PointsContainerContext } from './PointsContainerContext';
+import { StoriesListContext } from './StoriesListContext';
 import axios from 'axios';
 
 export const TasksListContext = createContext();
 
 const TasksListContextProvider = (props) => {
-  const {
-    addPointsContainer,
-    deletePointsContainer,
-    PointsContainers,
-    editPointsContainer,
-    getPointsContainer,
-  } = useContext(PointsContainerContext);
-
+  const { editStoryPoints, findEditStory, storyToEdit } =
+    useContext(StoriesListContext);
   const url = `http://localhost:3001/api/v1/tasks/`;
 
   const [tasks, setTasks] = useState([]);
   const [taskToEdit, setTaskToEdit] = useState({});
+  const [storyPoints, setStoryPoints] = useState(0);
 
   const getTasks = () => {
     const AssignData = (data) => {
-      if (data.status === 200) setTasks(data.data.tasks);
+      if (data.status === 200)  {
+        setTasks(data.data.tasks);
+        console.log(data.data.tasks)
+        console.log(tasks)
+      }
+      
+
     };
     const getData = (url) => {
       try {
-        axios.get(url).then((data) => AssignData(data));
+        axios.get(url)
+        .then((data) => AssignData(data));
       } catch (err) {
         console.error(err);
         process.exitCode = 1;
@@ -48,8 +49,10 @@ const TasksListContextProvider = (props) => {
   };
 
   const findEditTask = (id) => {
-    const task = tasks.find((task) => task._id === id);
-    setTaskToEdit(task);
+    const AssignData = (data) => {
+      if (data.status === 200) setTaskToEdit(data.data.task);
+    };
+    axios.get(`${url}/${id}`).then((data) => AssignData(data));
   };
 
   const editTask = (
@@ -57,42 +60,45 @@ const TasksListContextProvider = (props) => {
     storyId,
     title,
     description,
-    employee,
     points,
+    employee,
     completed
   ) => {
-    axios
-      .patch(`${url}/${id}`, {
-        id,
-        storyId,
-        title,
-        description,
-        points,
-        employee,
-        completed,
-      })
-      .then(getTasks())
-      .then(setTaskToEdit(null));
+    debugger
+    axios.patch(`${url}/${id}`, {
+        storyId: storyId,
+        title: title,
+        description: description,
+        points: points,
+        employee: employee,
+        completed: completed,
+      }).then(getTasks())
+      .then(setTaskToEdit(null))
+      .then(console.log(storyId, getStoryPoints(storyId), getStoryCompletedPoints(storyId)))
+      .then(editStoryPoints(storyId, getStoryPoints(storyId), getStoryCompletedPoints(storyId)))
   };
 
   const getStoryCompletedPoints = (storyId) => {
     const getStoryCompletedPointsArray = () => {
       const x = tasks.filter((task) => task.storyId === storyId);
-      if (x && x.isComplete) {
-        return x.points;
-      } else {
-        return 0;
-      }
+      const y = x.map((task) => {
+        if (task.completed) {
+          return task.points;
+        } else {
+          return 0;
+        }
+      });
+
+      return y;
     };
 
     if (getStoryCompletedPointsArray) {
-      var completedStoryPoints = getStoryCompletedPointsArray.reduce(function (
-        acc,
-        curr
-      ) {
-        return acc + curr;
-      },
-      0);
+      var completedStoryPoints = getStoryCompletedPointsArray().reduce(
+        function (acc, curr) {
+          return acc + curr;
+        },
+        0
+      );
     }
 
     if (completedStoryPoints) {
@@ -103,7 +109,8 @@ const TasksListContextProvider = (props) => {
   };
 
   const getStoryPoints = (storyId) => {
-    const x = tasks.filter((task) => task.storyId === storyId);
+    const x = tasks.filter((task) => task.storyId === storyId).map(task => task.points);
+
     if (x) {
       const storyPoints = x.reduce(function (acc, curr) {
         return acc + curr;
@@ -127,6 +134,8 @@ const TasksListContextProvider = (props) => {
           findEditTask,
           getStoryPoints,
           getStoryCompletedPoints,
+          setTaskToEdit,
+          getTasks,
         }}
       >
         {props.children}

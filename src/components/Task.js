@@ -24,13 +24,13 @@ const Task = ({ task, handleIsFormOpen }) => {
           <StyledButton
             className="btn--small"
             color={'red'}
-            onClick={() => removeTask(task.id)}
+            onClick={() => removeTask(task._id)}
           >
             <FaTimes />
           </StyledButton>
           <StyledButton
             className="btn--small"
-            onClick={() => handleLocalIsFormOpen(true, task.id)}
+            onClick={() => handleLocalIsFormOpen(true, task._id)}
           >
             <FaPen />
           </StyledButton>

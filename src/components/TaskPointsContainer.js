@@ -4,11 +4,11 @@ import { TasksListContext } from '../context/TasksListContext';
 function TaskPointsContainer({ task }) {
 
 const { editTask } = useContext(TasksListContext);
-const [completed, setCompleted] = useState(task.isComplete);
+const [completed, setCompleted] = useState(task.completed);
 
 const handleCLick = () => {
-  setCompleted(!completed)
-  editTask(task._id, task.storyId, task.title, task.description, task.points, task.employee, completed)
+  setCompleted(completed => !completed);
+  editTask(task._id, task.storyId, task.title, task.description, task.points, task.employee, !completed)
 }
 
   return (

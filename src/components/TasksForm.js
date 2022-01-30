@@ -1,16 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { TasksListContext } from '../context/TasksListContext';
-import TasksList from './TasksList';
 import { TaskFormContainer } from './TasksForm.style';
 import { StyledButton } from '../App.style';
 import { StoriesListContext } from '../context/StoriesListContext';
-import { PointsContainerContext } from '../context/PointsContainerContext';
 import { FaPen, FaPlus, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
 
 export const TasksForm = ({ storyId, handleIsFormOpen }) => {
-  const { tasks, addTask, clearTasksList, taskToEdit, editTask } =
+  const { tasks,  getTasks, removeTask, taskToEdit,  setTaskToEdit , editTask } =
     useContext(TasksListContext);
-    const {editPointsContainer, getPointsContainer} = useContext(PointsContainerContext)
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -19,13 +17,36 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
   const [employee, setEmployee] = useState('');
 
   const [isTaskFormVisible, setIsTaskFormVisible] = useState(true);
-  const { stories, editStory } = useContext(StoriesListContext);
-  const parentStory = stories.find((story) => story.id === storyId);
+  const { stories, editStory, editStoryPoints } = useContext(StoriesListContext);
+  const parentStory = stories.find((story) => story._id === storyId);
+
   const [storyPoints, setStoryPoints] = useState(parentStory.points)
+
+  const url = `http://localhost:3001/api/v1/tasks`;
+
+  async function addTask(
+    storyId,
+    title,
+    description,
+    employee,
+    points,
+  ) {
+    axios
+      .post(url, {
+        storyId,
+        title,
+        description,
+        employee,
+        points,
+      }).then(getTasks());
+  }
 
   const handleLocalIsFormOpen = (isOpen) => {
     handleIsFormOpen(isOpen);
     setIsTaskFormVisible(isOpen);
+    if(!isOpen) {
+      setTaskToEdit(null);
+    }
   };
 
   const handleTitleChange = (e) => {
@@ -44,20 +65,19 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // check if the submit is meant to edit an existing story
+    // check if the submit is meant to edit an existing task
     if (!taskToEdit) {
       addTask(storyId, title, description, employee, points);
     } else {
       editTask(
-        taskToEdit.id,
+        taskToEdit._id,
         taskToEdit.storyId,
         title,
         description,
+        points,
         employee,
-        points
+        taskToEdit.completed
       );
-      const pointsContainer = getPointsContainer(taskToEdit.id)
-      editPointsContainer(pointsContainer.id, taskToEdit.id,employee,points,pointsContainer.isComplete  )
     }
 
     handleChangeStoryPoints();
@@ -81,11 +101,10 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
 
   useEffect(() => {
     handleChangeStoryPoints();
-    editStory(
-      parentStory.id,
-      parentStory.title,
-      parentStory.description,
-      storyPoints
+    editStoryPoints(
+      parentStory._id,
+      storyPoints,
+      parentStory.completedPoints
     );
   }, [storyPoints]);
 
@@ -113,7 +132,7 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
             <StyledButton
               color={'red'}
               className="btn--small"
-              onClick={() => handleIsFormOpen(false)}
+              onClick={() => handleLocalIsFormOpen(false)}
             >
               <FaTimes />
             </StyledButton>

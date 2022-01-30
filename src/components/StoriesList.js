@@ -10,6 +10,9 @@ import BurnDownChart from './BurnDownChart';
 import {CategoryScale} from 'chart.js';
 import Chart from 'chart.js/auto'
 import StoriesForm from './StoriesForm';
+import { styled } from '@mui/material/styles';
+// import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import Tooltip from './tooltip/Tooltip'
 
 Chart.register(CategoryScale)
 
@@ -95,11 +98,28 @@ var enumerateStoryPointsBetweenDates = function(startDate, endDate) {
     ],
   }
 
+  // const LightTooltip = styled(({ className, ...props }) => (
+  //   <Tooltip {...props} classes={{ popper: className }} />
+  // ))(({ theme }) => ({
+  //   [`& .${tooltipClasses.arrow}`]: {
+  //     color: theme.palette.common.white,
+  //   },[`& .${tooltipClasses.tooltip}`]: {
+  //     backgroundColor: theme.palette.common.white,
+  //     color: 'rgba(0, 0, 0, 0.87)',
+  //     boxShadow: theme.shadows[1],
+  //     fontSize: 11,
+  //   },
+  // }));
+
   return (
     <StoriesListContainer>
+    
       <h2>Sprint Summary</h2>
+
       <div className='Sprint-Options'>
+      <Tooltip content="click to specify the start date and end date of the sprint" direction="right">
       <StyledButton onClick={toggleShowSprintPeriodForm}><FaCalendar />Set Sprint Date Range</StyledButton>
+      </Tooltip>
       </div>
       {showSprintPeriodForm && (
           <div className="CalenderSectionContainer">

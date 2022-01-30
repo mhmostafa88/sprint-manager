@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StyledButton } from '../App.style';
-import { TasksListContext } from '../context/TasksListContext';
+import { GlobalContext } from '../context/GlobalContext';
 import { StoryContainer } from './Story.style';
 import { TasksForm } from './TasksForm';
 import { TaskContainer } from './TasksList.style';
@@ -8,7 +8,7 @@ import TaskPointsContainer from './TaskPointsContainer';
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaPen, FaTimes, FaPlus } from 'react-icons/fa';
 
 const Task = ({ task, handleIsFormOpen }) => {
-  const { removeTask, findEditTask } = useContext(TasksListContext);
+  const { removeTask, findEditTask } = useContext(GlobalContext);
 
 
   const handleLocalIsFormOpen = (isOpen, taskId) => {

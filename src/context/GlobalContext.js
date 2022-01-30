@@ -1,13 +1,85 @@
-import { createContext, useState, useEffect, useContext } from 'react';
-import { StoriesListContext } from './StoriesListContext';
+import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const TasksListContext = createContext();
+export const GlobalContext = createContext();
 
-const TasksListContextProvider = (props) => {
-  const { editStoryPoints, findEditStory, storyToEdit } =
-    useContext(StoriesListContext);
-  const url = `http://localhost:3001/api/v1/tasks/`;
+const GlobalContextProvider = (props) => {
+  const url = 'http://localhost:3001/api/v1/';
+
+  const [stories, setStories] = useState([]);
+  
+  const getStoriesList = () => {
+    const AssignData = (data) => {
+      if (data.status === 200) setStories(data.data.stories);
+      console.log("now the list should be updated to " + stories)
+    };
+    const getData = (url) => {
+      try {
+        axios.get(url).then((data) => AssignData(data));
+      } catch (err) {
+        console.error(err);
+        process.exitCode = 1;
+      }
+    };
+
+    return getData(`${url}stories`);
+  };
+
+  useEffect(() => {
+    getStoriesList();
+  }, []);
+
+  // const initialState = getInitialStoriesList().then(output => console.log(output.data['stories']))
+
+  const [storyToEdit, setstoryToEdit] = useState('');
+
+  async function addStory(title, description, points, completedPoints) {
+    axios
+      .post(url, {
+        title,
+        description,
+        points,
+        completedPoints,
+      })
+      .then(getStoriesList());
+  }
+
+  const removeStory = (id) => {
+    axios.delete(`${url}stories/${id}`).then(getStoriesList());
+  };
+
+  const clearStoriesList = () => {
+    setStories([]);
+  };
+
+  const findEditStory = (id) => {
+    const AssignData = (data) => {
+      if (data.status === 200) setstoryToEdit(data.data.story);
+    };
+    axios.get(`${url}stories/${id}`).then((data) => AssignData(data));
+  };
+
+  const editStory = (id, title, description) => {
+
+    axios.patch(`${url}stories/${id}`, {
+      id,
+      title,
+      description,
+    }).then(setstoryToEdit(null))
+    .then(getStoriesList());
+  };
+
+  const editStoryPoints = (id, points, completedPoints) => {
+
+    axios.patch(`${url}stories/${id}`, {
+      points,
+      completedPoints,
+    }).then(setstoryToEdit(null))
+    .then(getStoriesList());
+  };
+
+
+  // tasks context
 
   const [tasks, setTasks] = useState([]);
   const [taskToEdit, setTaskToEdit] = useState({});
@@ -23,6 +95,7 @@ const TasksListContextProvider = (props) => {
       
 
     };
+
     const getData = (url) => {
       try {
         axios.get(url)
@@ -33,7 +106,7 @@ const TasksListContextProvider = (props) => {
       }
     };
 
-    return getData(url);
+    return getData(`${url}tasks`);
   };
 
   useEffect(() => {
@@ -41,18 +114,18 @@ const TasksListContextProvider = (props) => {
   }, []);
 
   const removeTask = (id) => {
-    axios.delete(`${url}/${id}`).then(getTasks());
+    axios.delete(`${url}tasks/${id}`).then(getTasks());
   };
 
   const removeStoryTasks = (storyId) => {
-    axios.delete(`${url}/story/${storyId}`).then(getTasks());
+    axios.delete(`${url}tasks/story/${storyId}`).then(getTasks());
   };
 
   const findEditTask = (id) => {
     const AssignData = (data) => {
       if (data.status === 200) setTaskToEdit(data.data.task);
     };
-    axios.get(`${url}/${id}`).then((data) => AssignData(data));
+    axios.get(`${url}tasks/${id}`).then((data) => AssignData(data));
   };
 
   const editTask = (
@@ -65,7 +138,7 @@ const TasksListContextProvider = (props) => {
     completed
   ) => {
     debugger
-    axios.patch(`${url}/${id}`, {
+    axios.patch(`${url}/tasks/${id}`, {
         storyId: storyId,
         title: title,
         description: description,
@@ -121,10 +194,20 @@ const TasksListContextProvider = (props) => {
     }
   };
 
+
   return (
     <div>
-      <TasksListContext.Provider
+      <GlobalContext.Provider
         value={{
+          stories,
+          addStory,
+          removeStory,
+          clearStoriesList,
+          findEditStory,
+          editStory,
+          editStoryPoints,
+          storyToEdit,
+          getStoriesList,
           tasks,
           removeStoryTasks,
           taskToEdit,
@@ -135,13 +218,13 @@ const TasksListContextProvider = (props) => {
           getStoryPoints,
           getStoryCompletedPoints,
           setTaskToEdit,
-          getTasks,
+          getTasks
         }}
       >
         {props.children}
-      </TasksListContext.Provider>
+      </GlobalContext.Provider>
     </div>
   );
 };
 
-export default TasksListContextProvider;
+export default GlobalContextProvider;

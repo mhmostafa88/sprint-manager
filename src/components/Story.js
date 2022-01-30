@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { StyledButton } from '../App.style';
-import { StoriesListContext } from '../context/StoriesListContext';
-import { TasksListContext } from '../context/TasksListContext';
+import { GlobalContext } from '../context/GlobalContext';
 import StoriesForm from './StoriesForm';
 import { StoryContainer } from './Story.style';
 import { TasksForm } from './TasksForm';
@@ -9,13 +8,32 @@ import TasksList from './TasksList';
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaPen, FaTimes, FaPlus } from 'react-icons/fa';
 
 const Story = ({ story }) => {
-  const { removeStory, findEditStory } = useContext(StoriesListContext);
-  const { getStoryCompletedPoints, getStoryPoints } = useContext(TasksListContext);
-  const { clearTasksList, tasks, setTasks, setTaskToEdit } = useContext(TasksListContext);
+  const { removeStory, findEditStory } = useContext(GlobalContext);
+  const { getStoryCompletedPoints, getStoryPoints, editStoryPoints } = useContext(GlobalContext);
+  const { clearTasksList, tasks, setTasks, setTaskToEdit } = useContext(GlobalContext);
   const [isTaskListOpen, setIsTaskListOpen] = useState(false);
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
   const [completedPoints, setCompletedPoints] = useState(getStoryCompletedPoints(story._Id));
   const [points, setPoints] = useState(getStoryPoints(story._Id));
+
+  const handleChangeStoryPoints = () => {
+    const storyTasks = tasks.filter((task) => task.storyId === story._Id);
+    if (storyTasks.length > 1) {
+      setPoints(storyTasks.reduce(function (acc, curr) {
+        return acc + curr.points;
+      }, 0));
+    } else {
+      setPoints(storyTasks.points);
+    }
+  }
+
+  useEffect(() => {
+    editStoryPoints(
+      story._id,
+      points,
+      story.completedPoints
+    );
+  }, [points]);
 
   const handleDelete = (storyId) => {
 
@@ -85,7 +103,7 @@ const Story = ({ story }) => {
       <p>{story.description}</p>
 
       {isTaskFormOpen && (
-        <TasksForm storyId={story._id} handleIsFormOpen={handleToggleTaskForm} />
+        <TasksForm storyId={story._id} handleIsFormOpen={handleToggleTaskForm} handleChangeStoryPoints={handleChangeStoryPoints}/>
       )}
       {isTaskListOpen && (
         <TasksList storyId={story._id} handleIsFormOpen={handleToggleTaskForm} />

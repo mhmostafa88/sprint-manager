@@ -1,14 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { TasksListContext } from '../context/TasksListContext';
 import { TaskFormContainer } from './TasksForm.style';
 import { StyledButton } from '../App.style';
-import { StoriesListContext } from '../context/StoriesListContext';
+import { GlobalContext } from '../context/GlobalContext';
 import { FaPen, FaPlus, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 
-export const TasksForm = ({ storyId, handleIsFormOpen }) => {
-  const { tasks,  getTasks, removeTask, taskToEdit,  setTaskToEdit , editTask } =
-    useContext(TasksListContext);
+export const TasksForm = ({ storyId, handleIsFormOpen, handleChangeStoryPoints }) => {
+  const { tasks,  getTasks, taskToEdit,  setTaskToEdit , editTask } =
+    useContext(GlobalContext);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -17,10 +16,10 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
   const [employee, setEmployee] = useState('');
 
   const [isTaskFormVisible, setIsTaskFormVisible] = useState(true);
-  const { stories, editStory, editStoryPoints } = useContext(StoriesListContext);
+  const { stories, editStory, editStoryPoints } = useContext(GlobalContext);
   const parentStory = stories.find((story) => story._id === storyId);
 
-  const [storyPoints, setStoryPoints] = useState(parentStory.points)
+  
 
   const url = `http://localhost:3001/api/v1/tasks`;
 
@@ -87,26 +86,6 @@ export const TasksForm = ({ storyId, handleIsFormOpen }) => {
     setPoints(0);
     setEmployee('');
   };
-
-  const handleChangeStoryPoints = () => {
-    const storyTasks = tasks.filter((task) => task.storyId === storyId);
-    if (storyTasks.length > 1) {
-      setStoryPoints(storyTasks.reduce(function (acc, curr) {
-        return acc + curr.points;
-      }, 0));
-    } else {
-      setStoryPoints(storyTasks.points);
-    }
-  }
-
-  useEffect(() => {
-    handleChangeStoryPoints();
-    editStoryPoints(
-      parentStory._id,
-      storyPoints,
-      parentStory.completedPoints
-    );
-  }, [storyPoints]);
 
   useEffect(() => {
     if (taskToEdit) {

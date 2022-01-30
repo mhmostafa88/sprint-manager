@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StoriesListContext } from '../context/StoriesListContext';
-import { TasksListContext } from '../context/TasksListContext';
+import { GlobalContext } from '../context/GlobalContext';
 import Task from './Task';
 import { TaskListContainer } from './TasksList.style';
 import axios from 'axios';
 
 const TasksList = ({ storyId, handleIsFormOpen }) => {
 
-  const { stories, editStory } = useContext(StoriesListContext);
-  const { tasks, getStoryPoints, getStoryCompletedPoints } = useContext(TasksListContext);
+  const { stories, editStory } = useContext(GlobalContext);
+  const { tasks, getStoryPoints, getStoryCompletedPoints } = useContext(GlobalContext);
 
   const parentStory = stories.find((story) => story._id === storyId);
 

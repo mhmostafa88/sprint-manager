@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { TaskPointsCard } from "./Task.style";
-import { TasksListContext } from '../context/TasksListContext';
+import { GlobalContext } from '../context/GlobalContext';
 function TaskPointsContainer({ task }) {
 
-const { editTask } = useContext(TasksListContext);
+const { editTask } = useContext(GlobalContext);
 const [completed, setCompleted] = useState(task.completed);
 
 const handleCLick = () => {

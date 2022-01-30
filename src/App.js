@@ -3,18 +3,15 @@ import { AppContainer } from "./App.style";
 import StoriesForm from "./components/StoriesForm";
 import StoriesList from "./components/StoriesList";
 
-import StoriesListContextProvider from "./context/StoriesListContext";
-import TasksListContextProvider from "./context/TasksListContext";
+import GlobalContextProvider from "./context/GlobalContext";
 
 const App = () => {
   return (
-    <StoriesListContextProvider>
-      <TasksListContextProvider>
+    <GlobalContextProvider>
         <AppContainer>
           <StoriesList />
         </AppContainer>
-      </TasksListContextProvider>
-    </StoriesListContextProvider>
+    </GlobalContextProvider>
   );
 };
 

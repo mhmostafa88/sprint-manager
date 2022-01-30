@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect  } from "react";
 import { FaPen, FaPlus, FaTimes } from "react-icons/fa";
 import { StyledButton } from "../App.style";
-import { StoriesListContext } from "../context/StoriesListContext";
+import { GlobalContext } from "../context/GlobalContext";
 import { StoryForm } from "./StoryForm.style";
 import { useNavigate } from 'react-router';
 
 const StoriesForm = ({isVisibleFoEdit}) => {
 const navigate = useNavigate();
-    const { addStory, clearStoriesList, storyToEdit, editStory, getStoriesList } = useContext(StoriesListContext);
+    const { addStory, clearStoriesList, storyToEdit, editStory } = useContext(GlobalContext);
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');

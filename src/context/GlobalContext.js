@@ -138,7 +138,7 @@ const GlobalContextProvider = (props) => {
     completed
   ) => {
     debugger
-    axios.patch(`${url}/tasks/${id}`, {
+    axios.patch(`${url}tasks/${id}`, {
         storyId: storyId,
         title: title,
         description: description,

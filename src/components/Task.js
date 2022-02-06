@@ -7,10 +7,8 @@ import { TaskContainer } from './TasksList.style';
 import TaskPointsContainer from './TaskPointsContainer';
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaPen, FaTimes, FaPlus } from 'react-icons/fa';
 
-const Task = ({ task, handleIsFormOpen }) => {
+const Task = ({ key, task, handleIsFormOpen }) => {
   const { removeTask, findEditTask } = useContext(GlobalContext);
-
-
   const handleLocalIsFormOpen = (isOpen, taskId) => {
     handleIsFormOpen(isOpen);
     findEditTask(taskId);
@@ -40,7 +38,6 @@ const Task = ({ task, handleIsFormOpen }) => {
           <TaskPointsContainer
             task={task}
           />
-          
         </div>
       </TaskContainer>
     </>

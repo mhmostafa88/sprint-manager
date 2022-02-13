@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { GlobalContext } from '../context/GlobalContext';
-import Task from './Task';
-import { TaskListContainer } from './TasksList.style';
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
+import Task from "./Task";
+import { TaskListContainer } from "./TasksList.style";
+import axios from "axios";
 
 const TasksList = ({ storyId, handleIsFormOpen }) => {
   const { stories, editStory } = useContext(GlobalContext);
@@ -35,20 +35,18 @@ const TasksList = ({ storyId, handleIsFormOpen }) => {
     getStoryTasks();
   }, [tasks]);
 
+  const taskList = storyTasks.map((task) => 
+    <Task key={task._id} task={task} handleIsFormOpen={handleIsFormOpen} />
+  );
+
   return (
     <TaskListContainer>
       <h3>Tasks</h3>
       {storyTasks.length ? (
         <div>
-          {storyTasks.map((task) => {
-            return (
-              <Task
-                key={task.id}
-                task={task}
-                handleIsFormOpen={handleIsFormOpen}
-              />
-            );
-          })}
+            <div>
+            {taskList}
+            </div>
         </div>
       ) : (
         <div>No Tasks</div>

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { StyledButton } from '../App.style';
 import { GlobalContext } from '../context/GlobalContext';
 import StoriesForm from './StoriesForm';
@@ -13,27 +13,47 @@ const Story = ({ story }) => {
   const { clearTasksList, tasks, setTasks, setTaskToEdit } = useContext(GlobalContext);
   const [isTaskListOpen, setIsTaskListOpen] = useState(false);
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
-  const [completedPoints, setCompletedPoints] = useState(getStoryCompletedPoints(story._Id));
-  const [points, setPoints] = useState(getStoryPoints(story._Id));
+  const [completedPoints, setCompletedPoints] = useState(getStoryCompletedPoints(story._id));
+  const [points, setPoints] = useState(getStoryPoints(story._id));
 
-  const handleChangeStoryPoints = () => {
-    const storyTasks = tasks.filter((task) => task.storyId === story._Id);
-    if (storyTasks.length > 1) {
-      setPoints(storyTasks.reduce(function (acc, curr) {
-        return acc + curr.points;
-      }, 0));
-    } else {
-      setPoints(storyTasks.points);
-    }
-  }
+  const handleChangeStoryPoints = useCallback(
+    () => {
+      const storyTasks = tasks.filter((task) => task.storyId === story._id);
+      
+      console.log('story:', story)
+      console.log('tasks:', tasks)
+      if (storyTasks.length > 0) {
+        setPoints(storyTasks.reduce(function (acc, curr) {
+          return acc + curr.points;
+        }, 0));
+      } else {
+        setPoints(storyTasks.points);
+      }
+    },[tasks],
+  )
 
   useEffect(() => {
+    handleChangeStoryPoints();
+    setCompletedPoints(getStoryCompletedPoints(story._id));
+  }, [tasks])
+
+  useEffect(() => {
+    console.log('story points:', points)
     editStoryPoints(
       story._id,
       points,
-      story.completedPoints
+      completedPoints
     );
   }, [points]);
+
+  useEffect(() => {
+    console.log('story completed points:', completedPoints)
+    editStoryPoints(
+      story._id,
+      points,
+      completedPoints
+    );
+  },[completedPoints])
 
   const handleDelete = (storyId) => {
 

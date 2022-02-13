@@ -1,9 +1,16 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export const GlobalContext = createContext();
 
 const GlobalContextProvider = (props) => {
+
+  axios.defaults.headers = {
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+  };
+
   const url = 'http://localhost:3001/api/v1/';
 
   const [stories, setStories] = useState([]);
@@ -11,7 +18,6 @@ const GlobalContextProvider = (props) => {
   const getStoriesList = () => {
     const AssignData = (data) => {
       if (data.status === 200) setStories(data.data.stories);
-      console.log("now the list should be updated to " + stories)
     };
     const getData = (url) => {
       try {
@@ -89,11 +95,7 @@ const GlobalContextProvider = (props) => {
     const AssignData = (data) => {
       if (data.status === 200)  {
         setTasks(data.data.tasks);
-        console.log(data.data.tasks)
-        console.log(tasks)
       }
-      
-
     };
 
     const getData = (url) => {
@@ -108,6 +110,10 @@ const GlobalContextProvider = (props) => {
 
     return getData(`${url}tasks`);
   };
+
+  useEffect(() => {
+    console.log('tasks',tasks)
+  }, [tasks]);
 
   useEffect(() => {
     getTasks();
@@ -137,7 +143,6 @@ const GlobalContextProvider = (props) => {
     employee,
     completed
   ) => {
-    debugger
     axios.patch(`${url}tasks/${id}`, {
         storyId: storyId,
         title: title,
@@ -147,52 +152,58 @@ const GlobalContextProvider = (props) => {
         completed: completed,
       }).then(getTasks())
       .then(setTaskToEdit(null))
-      .then(console.log(storyId, getStoryPoints(storyId), getStoryCompletedPoints(storyId)))
-      .then(editStoryPoints(storyId, getStoryPoints(storyId), getStoryCompletedPoints(storyId)))
   };
 
-  const getStoryCompletedPoints = (storyId) => {
-    const getStoryCompletedPointsArray = () => {
-      const x = tasks.filter((task) => task.storyId === storyId);
-      const y = x.map((task) => {
-        if (task.completed) {
-          return task.points;
-        } else {
-          return 0;
-        }
-      });
+  const getStoryCompletedPoints = useCallback(
+    (storyId) => {
+      console.log('starting getStoryCompletedPoints')
+      console.log('tasks when getting story completed points: ',tasks)
+      const getStoryCompletedPointsArray = () => {
+        const x = tasks.filter((task) => task.storyId === storyId);
+        const y = x.map((task) => {
+          if (task.completed) {
+            return task.points;
+          } else {
+            return 0;
+          }
+        });
+  
+        return y;
+      };
+  
+      if (getStoryCompletedPointsArray) {
+        var completedStoryPoints = getStoryCompletedPointsArray().reduce(
+          function (acc, curr) {
+            return acc + curr;
+          },
+          0
+        );
+      }
+  
+      if (completedStoryPoints) {
+        return completedStoryPoints;
+      } else {
+        return 0;
+      }
+    },[tasks]
 
-      return y;
-    };
+  )
 
-    if (getStoryCompletedPointsArray) {
-      var completedStoryPoints = getStoryCompletedPointsArray().reduce(
-        function (acc, curr) {
+  const getStoryPoints = useCallback(
+
+    (storyId) => {
+      const x = tasks.filter((task) => task.storyId === storyId).map(task => task.points);
+  
+      if (x) {
+        const storyPoints = x.reduce(function (acc, curr) {
           return acc + curr;
-        },
-        0
-      );
-    }
-
-    if (completedStoryPoints) {
-      return completedStoryPoints;
-    } else {
-      return 0;
-    }
-  };
-
-  const getStoryPoints = (storyId) => {
-    const x = tasks.filter((task) => task.storyId === storyId).map(task => task.points);
-
-    if (x) {
-      const storyPoints = x.reduce(function (acc, curr) {
-        return acc + curr;
-      }, 0);
-      return storyPoints;
-    } else {
-      return 0;
-    }
-  };
+        }, 0);
+        return storyPoints;
+      } else {
+        return 0;
+      }
+    },[tasks]
+  )
 
 
   return (

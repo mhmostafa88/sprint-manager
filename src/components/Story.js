@@ -19,9 +19,6 @@ const Story = ({ story }) => {
   const handleChangeStoryPoints = useCallback(
     () => {
       const storyTasks = tasks.filter((task) => task.storyId === story._id);
-      
-      console.log('story:', story)
-      console.log('tasks:', tasks)
       if (storyTasks.length > 0) {
         setPoints(storyTasks.reduce(function (acc, curr) {
           return acc + curr.points;
@@ -38,7 +35,6 @@ const Story = ({ story }) => {
   }, [tasks])
 
   useEffect(() => {
-    console.log('story points:', points)
     editStoryPoints(
       story._id,
       points,
@@ -47,7 +43,6 @@ const Story = ({ story }) => {
   }, [points]);
 
   useEffect(() => {
-    console.log('story completed points:', completedPoints)
     editStoryPoints(
       story._id,
       points,
@@ -85,7 +80,7 @@ const Story = ({ story }) => {
             <FaAngleDoubleUp onClick={() => handleTaskList(false)} />
           )}
           {story.title} (
-          {story.completedPoints > 0 ? `${completedPoints}/` : ''}
+          {story.completedPoints ? `${completedPoints}/` : ''}
           {story.points} points)
           {story.completedPoints > 0
             ? Math.floor((completedPoints / points) * 100) +

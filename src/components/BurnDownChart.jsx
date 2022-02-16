@@ -1,15 +1,34 @@
-import { Bar} from 'react-chartjs-2';
-import {CategoryScale} from 'chart.js'; 
-import Chart from 'chart.js/auto'
-Chart.register(CategoryScale)
+
+import {
+  Chart as ChartJS,
+  LinearScale,
+  CategoryScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Legend,
+  Tooltip,
+} from 'chart.js';
+import { Chart } from 'react-chartjs-2';
+
+ChartJS.register(
+  LinearScale,
+  CategoryScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Legend,
+  Tooltip
+);
+
 function BurnDownChart({data}) {
   return (
     <div className="App">
       <h1>Burn Down Chart</h1>
       <div style={{ maxWidth: '350px' }}>
-        <Bar
+        <Chart
+        type='bar'
           data={data}
-          // Height of graph
           height={400}
         />
       </div>

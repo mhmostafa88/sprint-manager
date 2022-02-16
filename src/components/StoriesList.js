@@ -66,8 +66,8 @@ const StoriesList = () => {
   var enumerateDaysBetweenDates = function (startDate, endDate) {
     var dates = [];
 
-    var currDate = moment(startDate).startOf('day');
-    var lastDate = moment(endDate).startOf('day');
+    var currDate = moment(startDate).subtract(1,'days').startOf('day');
+    var lastDate = moment(endDate).add(1,'days').startOf('day');
 
     while (currDate.add(1, 'days').diff(lastDate) < 0) {
       dates.push(currDate.clone().format('MM/DD/YY'));
@@ -76,36 +76,63 @@ const StoriesList = () => {
     return dates;
   };
 
-  var enumerateStoryPointsBetweenDates = function (startDate, endDate) {
+  var enumerateStoryPointsBetweenDates = function () {
     var currentPoints = storyPoints;
     var points = [];
-    var currDate = moment(startDate).startOf('day');
-    var lastDate = moment(endDate).startOf('day');
 
     const requiredPointsPerDay = getReqCompleted();
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
+    while (currentPoints > 0) {
       points.push(currentPoints);
       currentPoints = currentPoints - requiredPointsPerDay;
     }
     return points;
   };
 
+
+
+  var enumerateCompletedStoryPointsBetweenDates = function (startDate) {
+    var currDate = moment(startDate).subtract(1,'days')
+    
+    var points = [];
+
+    const requiredPointsPerDay = completedStoryPoints/today.diff(currDate,'days').toFixed(1)
+    var currentPoints = storyPoints;
+    while (currentPoints > 0 && today.diff(currDate, 'days') > 0 )   {
+      points.push(currentPoints);
+      console.log(today.diff(currDate, 'days'),currentPoints,requiredPointsPerDay);
+      currentPoints = (currentPoints - requiredPointsPerDay);
+      console.log(currentPoints)
+      currDate = currDate.add(1, 'days')
+    }
+    return points;
+  };
+
   const labels = enumerateDaysBetweenDates(sprintStartDate, sprintEndDate);
-  const dataset = enumerateStoryPointsBetweenDates(
-    sprintStartDate,
-    sprintEndDate
-  );
+  const datasetBar = enumerateStoryPointsBetweenDates()
+  const datasetLine =  enumerateCompletedStoryPointsBetweenDates(sprintStartDate);
   const data = {
     // Name of the variables on x-axies for each bar
     labels: labels,
     datasets: [
       {
-        // Data or value of your each variable
-        data: dataset,
-        backgroundColor: 'hsl(250, 24%, 48%)',
+        type:'line',
+        label: 'Actual remaining points',
+        borderColor: 'rgb(255, 99, 132)',
+        borderWidth: 2,
+        fill: false,
+        data: datasetLine,
       },
+      {
+        type: 'bar',
+      label: 'Expected Remaining points',
+      backgroundColor: 'hsl(250, 24%, 48%)',
+      data: datasetBar,
+      borderColor: 'white',
+      borderWidth: 2,
+      }
     ],
   };
+
 
   return (
     <StoriesListContainer>

@@ -112,10 +112,6 @@ const GlobalContextProvider = (props) => {
   };
 
   useEffect(() => {
-    console.log('tasks',tasks)
-  }, [tasks]);
-
-  useEffect(() => {
     getTasks();
   }, []);
 
@@ -156,8 +152,6 @@ const GlobalContextProvider = (props) => {
 
   const getStoryCompletedPoints = useCallback(
     (storyId) => {
-      console.log('starting getStoryCompletedPoints')
-      console.log('tasks when getting story completed points: ',tasks)
       const getStoryCompletedPointsArray = () => {
         const x = tasks.filter((task) => task.storyId === storyId);
         const y = x.map((task) => {

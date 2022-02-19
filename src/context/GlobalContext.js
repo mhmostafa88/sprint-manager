@@ -35,8 +35,6 @@ const GlobalContextProvider = (props) => {
     getStoriesList();
   }, []);
 
-  // const initialState = getInitialStoriesList().then(output => console.log(output.data['stories']))
-
   const [storyToEdit, setstoryToEdit] = useState('');
 
   async function addStory(title, description, points, completedPoints) {
@@ -66,7 +64,7 @@ const GlobalContextProvider = (props) => {
   };
 
   const editStory = (id, title, description) => {
-
+    console.log("about to edit this story in the database")
     axios.patch(`${url}stories/${id}`, {
       id,
       title,
@@ -76,12 +74,10 @@ const GlobalContextProvider = (props) => {
   };
 
   const editStoryPoints = (id, points, completedPoints) => {
-
     axios.patch(`${url}stories/${id}`, {
       points,
       completedPoints,
-    }).then(setstoryToEdit(null))
-    .then(getStoriesList());
+    }).then(getStoriesList());
   };
 
 
@@ -150,6 +146,7 @@ const GlobalContextProvider = (props) => {
       .then(setTaskToEdit(null))
   };
 
+  // this is where the problem is: sometimes the tasks array is still not completely updated (only sometimes though)
   const getStoryCompletedPoints = useCallback(
     (storyId) => {
       const getStoryCompletedPointsArray = () => {
@@ -161,7 +158,6 @@ const GlobalContextProvider = (props) => {
             return 0;
           }
         });
-  
         return y;
       };
   
@@ -175,12 +171,13 @@ const GlobalContextProvider = (props) => {
       }
   
       if (completedStoryPoints) {
+        console.log(tasks)
+
         return completedStoryPoints;
       } else {
         return 0;
       }
     },[tasks]
-
   )
 
   const getStoryPoints = useCallback(

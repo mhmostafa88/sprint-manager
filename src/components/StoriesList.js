@@ -109,7 +109,6 @@ const StoriesList = () => {
       currentPoints = currentPoints - requiredPointsPerDay;
       currDate = currDate.add(1, "days");
     }
-    console.log(completedStoryPoints,requiredPointsPerDay, (today.diff(startDate, "days").toFixed(1)))
     return points;
   };
 

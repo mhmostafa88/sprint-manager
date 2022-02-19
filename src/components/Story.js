@@ -32,6 +32,7 @@ const Story = ({ story }) => {
   useEffect(() => {
     handleChangeStoryPoints();
     setCompletedPoints(getStoryCompletedPoints(story._id));
+    console.log('works')
   }, [tasks])
 
   useEffect(() => {

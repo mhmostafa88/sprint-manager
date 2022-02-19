@@ -1,3 +1,5 @@
+import React from 'react';
+
 import "./App.css";
 import { AppContainer } from "./App.style";
 import StoriesForm from "./components/StoriesForm";
@@ -7,11 +9,13 @@ import GlobalContextProvider from "./context/GlobalContext";
 
 const App = () => {
   return (
-    <GlobalContextProvider>
+    <React.StrictMode>
+      <GlobalContextProvider>
         <AppContainer>
           <StoriesList />
         </AppContainer>
-    </GlobalContextProvider>
+      </GlobalContextProvider>
+    </React.StrictMode>
   );
 };
 

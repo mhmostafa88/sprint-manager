@@ -1,3 +1,4 @@
+@import-normalize;
 
 :root {
     --primary-color-Purple: hsl(250, 24%, 48%);
